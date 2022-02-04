@@ -1,15 +1,9 @@
-// const EventEmmitter = require("events");
-// // const fs = require("fs");
-// const emmitter = new EventEmmitter();
-// emmitter.on("a", (arg) => {
-//   console.log(arg);
-// });
-// emmitter.emit("a", { id: 2233, url: "blog.com" });
+const Logger = require("./logger");
+const EventEmitter = require("events");
 
-const EventEmmitter = require("events");
-const eventEmmitter = new EventEmmitter();
-eventEmmitter.on("logging", (data) => console.log(data.message));
+const logger = new Logger();
+logger.on("messageLogged", (arg) => {
+  console.log("arg" + arg);
+});
 
-eventEmmitter.emit("logging", { message: "logging" });
-// logging(data:message)
-// raise handle
+logger.log("payam");

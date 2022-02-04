@@ -1,8 +1,12 @@
-const url = "http:/mylogger.io/log";
+const EventEmitter = require("events");
 
-function log(msg) {
-  console.log(msg);
+class Logger extends EventEmitter {
+  log(msg) {
+    const see = { see: "no", name: "t-ara" };
+
+    console.log(msg);
+
+    this.emit("messageLogged", see);
+  }
 }
-
-module.exports.log = log;
-console.log(module);
+module.exports = Logger;
