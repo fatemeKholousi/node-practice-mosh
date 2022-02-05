@@ -1,9 +1,20 @@
-const Logger = require("./logger");
-const EventEmitter = require("events");
+const http = require("http");
+const server = http.createServer((req, res) => {
+  if (req.url === "/") {
+    res.write("Hi lilo");
 
-const logger = new Logger();
-logger.on("messageLogged", (arg) => {
-  console.log("arg" + arg);
+    res.end();
+  }
+  if (req.url === "/group/wjsn") {
+    res.write(JSON.stringify([1, 2, 3]));
+    res.end();
+  }
 });
 
-logger.log("payam");
+// server.on("connection", (socket) => {
+//   console.log("new connection");
+// });
+
+server.listen(3000);
+
+console.log("I'm hearing your voice from 3000...");
