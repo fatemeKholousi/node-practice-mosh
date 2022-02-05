@@ -1,0 +1,23 @@
+{
+  "name": "ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fatemeKholousi/node-practice-mosh.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fatemeKholousi/node-practice-mosh/issues"
+  },
+  "homepage": "https://github.com/fatemeKholousi/node-practice-mosh#readme",
+  "dependencies": {
+    "mongoose": "^6.2.0"
+  }
+}
