@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/fatemeKholousi/node-practice-mosh#readme",
   "dependencies": {
-    "mongoose": "^6.2.0"
+    "express": "^4.17.2",
+    "joi": "^17.6.0",
+    "mongoose": "^6.2.0",
+    "nodemon": "^2.0.15",
+    "underscore": "^1.4.0"
   }
 }
