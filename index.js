@@ -22,9 +22,6 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listen you from ${port}`);
 });
-// app.post()
-// app.put()
-// app.delete()
 
 app.get("/api/authors/:id", (req, res) => {
   const authy = authors.find((item) => item.id === parseInt(req.params.id));
