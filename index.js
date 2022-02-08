@@ -1,70 +1,75 @@
 const express = require("express");
 const Joi = require("joi");
 const app = express();
-
-const authors = [
-  { id: 1, name: "L.M.M" },
-  { id: 2, name: "R.L.Stine" },
-  { id: 3, name: "Jane webster" },
-];
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hi Baily");
+const genres = [
+  {
+    name: "slice of life",
+    id: 1,
+  },
+  {
+    name: "comedy",
+    id: 2,
+  },
+  {
+    name: "horror",
+    id: 3,
+  },
+  {
+    name: "thriler",
+    id: 4,
+  },
+];
+
+app.get("/api/genres", (req, res) => {
+  res.send(genres);
 });
 
-app.get("/api/authors", (req, res) => {
-  res.send(authors);
+app.listen(3000, () => console.log("I can listen you from 3000"));
+
+app.get("/api/genres/:id", (req, res) => {
+  const selectedGenre = genres.find(
+    (genre) => genre.id === parseInt(req.params.id)
+  );
+  if (!selectedGenre) return res.status(404).send("You Poor child look lost");
+  res.send(selectedGenre);
 });
 
-const port = process.env.PORT || 3000;
-// in terminal:
-// set PORT=6000
-app.listen(port, () => {
-  console.log(`listen you from ${port}`);
+//don't forget json type in postman
+app.post("/api/genres", (req, res) => {
+  const newGenre = { id: genres.length + 1, name: req.body.name };
+  genres.push(newGenre);
+  res.send(newGenre);
 });
 
-app.get("/api/authors/:id", (req, res) => {
-  const authy = authors.find((item) => item.id === parseInt(req.params.id));
-  if (!authy) res.status(404).send("404!");
-  res.send(authy);
-});
-
-app.post("/api/authors", (req, res) => {
-  const schema = { name: Joi.string().min(3) };
-  const newAuthor = { id: authors.length + 1, name: req.body.name };
-  authors.push(newAuthor);
-  res.send(newAuthor);
-});
-
-app.put("/api/authors/:id", (req, res) => {
-  const authy = authors.find((item) => item.id === parseInt(req.params.id));
-  if (!authy) res.status(404).send("404!");
-
-  // console.log(result);
-  // const result = validateAuthy(req.body);
-  const { error } = validateAuthy(req.body);
-
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
-  authy.name = req.body.name;
-  res.send(authy);
-});
-
-function validateAuthy(authy) {
+const validateGenres = (genre) => {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
   });
-  return schema.validate(authy);
-}
+  return schema.validate(genre);
+};
 
-app.delete("/api/authors/:id", (req, res) => {
-  const authy = authors.find((item) => item.id === parseInt(req.params.id));
-  if (!authy) res.status(404).send("404!");
-  const index = authors.indexOf(authy);
-  authors.splice(index, 1);
+app.put("/api/genres/:id", (req, res) => {
+  const selectedGenre = genres.find(
+    (genre) => genre.id === parseInt(req.params.id)
+  );
+  if (!selectedGenre) return res.status(404).send("You Poor child look lost");
 
-  res.send(authy);
+  const { error } = validateGenres(req.body);
+
+  if (error) return res.status(400).send(error.details[0].message);
+  selectedGenre.name = req.body.name;
+  res.send(selectedGenre);
+});
+
+app.delete("/api/genres/:id", (req, res) => {
+  const selectedGenre = genres.find(
+    (genre) => genre.id === parseInt(req.params.id)
+  );
+  if (!selectedGenre) return res.status(404).send("You Poor child look lost");
+  const index = genres.indexOf(selectedGenre);
+  genres.splice(index, 1);
+
+  res.send(selectedGenre);
 });
