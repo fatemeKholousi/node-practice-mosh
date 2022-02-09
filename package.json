@@ -19,8 +19,10 @@
   "homepage": "https://github.com/fatemeKholousi/node-practice-mosh#readme",
   "dependencies": {
     "express": "^4.17.2",
+    "helmet": "^5.0.2",
     "joi": "^17.6.0",
     "mongoose": "^6.2.0",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
     "underscore": "^1.4.0"
   }
