@@ -1,13 +1,27 @@
 const express = require("express");
 const Joi = require("joi");
+const logger = require("./logger");
 const app = express();
+const morgan = require("morgan");
+const helmet = require("helmet");
 
 const authors = [
   { id: 1, name: "L.M.M" },
   { id: 2, name: "R.L.Stine" },
   { id: 3, name: "Jane webster" },
 ];
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(logger);
+app.use(express.static("public"));
+app.use(helmet());
+
+console.log(`app is in ${app.get("env")} enviroment`);
+if (app.get("env") === "development") {
+  morgan("tiny");
+  console.log("morgan enabled...");
+}
 
 app.get("/", (req, res) => {
   res.send("Hi Baily");
