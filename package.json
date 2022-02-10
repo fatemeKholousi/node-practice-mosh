@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start_env_production": "set NODE_ENV=production&&node index.js",
+    "start_env_development": "set NODE_ENV=development&&node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,8 @@
   },
   "homepage": "https://github.com/fatemeKholousi/node-practice-mosh#readme",
   "dependencies": {
+    "config": "^3.3.7",
+    "debug": "^4.3.3",
     "express": "^4.17.2",
     "helmet": "^5.0.2",
     "joi": "^17.6.0",
@@ -25,5 +29,8 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
     "underscore": "^1.4.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
