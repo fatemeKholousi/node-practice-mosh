@@ -4,6 +4,7 @@ const logger = require("./logger");
 const app = express();
 const morgan = require("morgan");
 const helmet = require("helmet");
+const config = require("config");
 
 const authors = [
   { id: 1, name: "L.M.M" },
@@ -16,6 +17,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 app.use(express.static("public"));
 app.use(helmet());
+
+//configuration
+console.log("Application Name=" + config.get("name"));
+console.log(" mailserver=" + config.get("mail.host"));
+console.log(" mail password=" + config.get("mail.password"));
 
 console.log(`app is in ${app.get("env")} enviroment`);
 if (app.get("env") === "development") {
