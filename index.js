@@ -1,90 +1,35 @@
-const express = require("express");
-const Joi = require("joi");
-const logger = require("./logger");
-const app = express();
-const morgan = require("morgan");
-const helmet = require("helmet");
-const config = require("config");
+console.log("before");
+getUser(1212, displayUser);
 
-const authors = [
-  { id: 1, name: "L.M.M" },
-  { id: 2, name: "R.L.Stine" },
-  { id: 3, name: "Jane webster" },
-];
+console.log("after");
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(logger);
-app.use(express.static("public"));
-app.use(helmet());
-
-//configuration
-console.log("Application Name=" + config.get("name"));
-console.log(" mailserver=" + config.get("mail.host"));
-console.log(" mail password=" + config.get("mail.password"));
-
-console.log(`app is in ${app.get("env")} enviroment`);
-if (app.get("env") === "development") {
-  morgan("tiny");
-  console.log("morgan enabled...");
+function displayUser(user) {
+  getRepositories(user.gitHubUserName, displayRepos);
 }
 
-app.get("/", (req, res) => {
-  res.send("Hi Baily");
-});
-
-app.get("/api/authors", (req, res) => {
-  res.send(authors);
-});
-
-const port = process.env.PORT || 3000;
-// in terminal:
-// set PORT=6000
-app.listen(port, () => {
-  console.log(`listen you from ${port}`);
-});
-
-app.get("/api/authors/:id", (req, res) => {
-  const authy = authors.find((item) => item.id === parseInt(req.params.id));
-  if (!authy) res.status(404).send("404!");
-  res.send(authy);
-});
-
-app.post("/api/authors", (req, res) => {
-  const schema = { name: Joi.string().min(3) };
-  const newAuthor = { id: authors.length + 1, name: req.body.name };
-  authors.push(newAuthor);
-  res.send(newAuthor);
-});
-
-app.put("/api/authors/:id", (req, res) => {
-  const authy = authors.find((item) => item.id === parseInt(req.params.id));
-  if (!authy) res.status(404).send("404!");
-
-  // console.log(result);
-  // const result = validateAuthy(req.body);
-  const { error } = validateAuthy(req.body);
-
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
-  authy.name = req.body.name;
-  res.send(authy);
-});
-
-function validateAuthy(authy) {
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-  });
-  return schema.validate(authy);
+function displayRepos(repos) {
+  getCommits((repo = "saam"), displayCommits);
 }
 
-app.delete("/api/authors/:id", (req, res) => {
-  const authy = authors.find((item) => item.id === parseInt(req.params.id));
-  if (!authy) res.status(404).send("404!");
-  const index = authors.indexOf(authy);
-  authors.splice(index, 1);
+function displayCommits(commits) {
+  console.log(commits);
+}
 
-  res.send(authy);
-});
+function getCommits(commits, callBack) {
+  setTimeout(() => {
+    return callBack({ id: 235, message: "fix:" });
+  }, 200);
+}
+
+function getUser(id, callBack) {
+  setTimeout(() => {
+    return callBack({ id: id, gitHubUserName: "Fateme" });
+  }, 200);
+}
+
+function getRepositories(username, callBack) {
+  console.log("my git user name is : " + username);
+  setTimeout(() => {
+    return callBack(["rep1", "rep2", "rep3"]);
+  }, 2000);
+}
