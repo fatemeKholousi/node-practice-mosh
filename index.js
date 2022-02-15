@@ -3,3 +3,4 @@ mongoose
   .connect("mongodb://localhost/playground")
   .then(() => console.log("connected to MongoDb..."))
   .catch((err) => console.log(err));
+
