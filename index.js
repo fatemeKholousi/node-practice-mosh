@@ -41,6 +41,6 @@ async function getCourses() {
     .count();
   console.log(courses);
 }
-
+//
 // createCourse();
 getCourses();
