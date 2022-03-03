@@ -16,9 +16,9 @@ const Course = mongoose.model("Course", courseScema);
 async function createCourse() {
   const course = new Course({
     name: "React.js Couse",
-    author: "Fatte",
-    tags: ["node", "backend"],
-    isPublished: true,
+    author: "Moshy",
+    tags: ["php", "unity"],
+    isPublished: false,
   });
 
   const result = await course.save();
@@ -40,7 +40,31 @@ async function getCourses() {
     .count();
   console.log(courses);
 }
+createCourse()
+async function updateCourse(id){
+//query first:
+//findbyId
+//modify it's property
+//save()
+const course =await Course.findById(id);
+if (!course) return;
 //
+course.isPublished=true;
+course.author="another"
+//or
+// course.set({
+//   isPublished:true,
+//   author:"other"
+// })
+
+const result =await course.save()
+console.log(result)
+//-----------------------------------------updatefirst
+// update directly
+
+
+}
+updateCourse('621fd4a835732dffcd77cb6b')
 // createCourse();
-getCourses();
+// getCourses();
 
