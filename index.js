@@ -1,70 +1,76 @@
-const express = require("express");
-const Joi = require("joi");
-const app = express();
+const mongoose = require("mongoose");
+mongoose
+  .connect("mongodb://localhost/playground")
+  .then(() => console.log("connected to MongoDb..."))
+  .catch((err) => console.log(err));
 
-const authors = [
-  { id: 1, name: "L.M.M" },
-  { id: 2, name: "R.L.Stine" },
-  { id: 3, name: "Jane webster" },
-];
-app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("Hi Baily");
+const courseScema = new mongoose.Schema({
+  name: String,
+  author: String,
+  tags: [String],
+  date: { type: Date, default: Date.now },
+  isPublished: Boolean,
 });
 
-app.get("/api/authors", (req, res) => {
-  res.send(authors);
-});
-
-const port = process.env.PORT || 3000;
-// in terminal:
-// set PORT=6000
-app.listen(port, () => {
-  console.log(`listen you from ${port}`);
-});
-
-app.get("/api/authors/:id", (req, res) => {
-  const authy = authors.find((item) => item.id === parseInt(req.params.id));
-  if (!authy) res.status(404).send("404!");
-  res.send(authy);
-});
-
-app.post("/api/authors", (req, res) => {
-  const schema = { name: Joi.string().min(3) };
-  const newAuthor = { id: authors.length + 1, name: req.body.name };
-  authors.push(newAuthor);
-  res.send(newAuthor);
-});
-
-app.put("/api/authors/:id", (req, res) => {
-  const authy = authors.find((item) => item.id === parseInt(req.params.id));
-  if (!authy) res.status(404).send("404!");
-
-  // console.log(result);
-  // const result = validateAuthy(req.body);
-  const { error } = validateAuthy(req.body);
-
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
-  authy.name = req.body.name;
-  res.send(authy);
-});
-
-function validateAuthy(authy) {
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
+const Course = mongoose.model("Course", courseScema);
+async function createCourse() {
+  const course = new Course({
+    name: "React.js Couse",
+    author: "Moshy",
+    tags: ["php", "unity"],
+    isPublished: false,
   });
-  return schema.validate(authy);
+
+  const result = await course.save();
+  console.log(result);
 }
 
-app.delete("/api/authors/:id", (req, res) => {
-  const authy = authors.find((item) => item.id === parseInt(req.params.id));
-  if (!authy) res.status(404).send("404!");
-  const index = authors.indexOf(authy);
-  authors.splice(index, 1);
+async function getCourses() {
+  const pageNumber = 2;
+  const pageSize = 10;
+  const courses = await Course.find({
+    author: "Fateme",
+    isPublished: true,
+    // price: { $in: [10, 15 , 20], gte: 10 },
+  })
+    .sort({ name: 1 })
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .select({ name: 1, tags: 1 })
+    .count();
+  console.log(courses);
+}
+createCourse()
+async function updateCourse(id){
+//query first:
+//findbyId
+//modify it's property
+//save()
+const course =await Course.findById(id);
+if (!course) return; 
+//
+course.isPublished=true;
+course.author="another"
+//or
+// course.set({
+//   isPublished:true,
+//   author:"other"
+// })
 
-  res.send(authy);
-});
+const result =await course.save()
+
+console.log(result)
+//-----------------------------------------updatefirst
+// update directly
+}
+updateCourse('621fd4a835732dffcd77cb6b')
+// createCourse();
+// getCourses();
+async function removeCourse(id){
+  //it will delete first one
+  // const result=await Course.deleteOne({_id:id})
+  const course =await Course.findByIdAndRemove(id)
+  console.log(course)
+
+}
+removeCourse("621fd4a835732dffcd77cb6b")
