@@ -16,6 +16,7 @@ const Course = mongoose.model("Course", courseScema);
 async function createCourse() {
   const course = new Course({
     name: "React.js Couse",
+
     author: "Fatte",
     tags: ["node", "backend"],
     isPublished: true,
@@ -25,6 +26,57 @@ async function createCourse() {
   console.log(result);
 }
 
+async function getCourses() {
+  const pageNumber = 2;
+  const pageSize = 10;
+  const courses = await Course.find({
+    author: "Fateme",
+    isPublished: true,
+    // price: { $in: [10, 15 , 20], gte: 10 },
+  })
+    .sort({ name: 1 })
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .select({ name: 1, tags: 1 })
+    .count();
+  console.log(courses);
+}
+createCourse()
+async function updateCourse(id){
+//query first:
+//findbyId
+//modify it's property
+//save()
+const course =await Course.findById(id);
+if (!course) return; 
+//
+course.isPublished=true;
+course.author="another"
+//or
+// course.set({
+//   isPublished:true,
+//   author:"other"
+// })
+
+const result =await course.save()
+
+console.log(result)
+//-----------------------------------------updatefirst
+// update directly
+=======
+}
+updateCourse('621fd4a835732dffcd77cb6b')
+// createCourse();
+// getCourses();
+async function removeCourse(id){
+  //it will delete first one
+  // const result=await Course.deleteOne({_id:id})
+  const course =await Course.findByIdAndRemove(id)
+  console.log(course)
+
+}
+removeCourse("621fd4a835732dffcd77cb6b")
+=======
 async function getCourses() {
   const pageNumber = 2;
   const pageSize = 10;
