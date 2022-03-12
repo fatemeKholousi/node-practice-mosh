@@ -3,24 +3,24 @@ const Joi = require("joi");
 const app = express();
 app.use(express.json());
 
-const genres = [
-  {
-    name: "slice of life",
-    id: 1,
-  },
-  {
-    name: "comedy",
-    id: 2,
-  },
-  {
-    name: "horror",
-    id: 3,
-  },
-  {
-    name: "thriler",
-    id: 4,
-  },
-];
+// const genres = [
+//   {
+//     name: "slice of life",
+//     id: 1,
+//   },
+//   {
+//     name: "comedy",
+//     id: 2,
+//   },
+//   {
+//     name: "horror",
+//     id: 3,
+//   },
+//   {
+//     name: "thriler",
+//     id: 4,
+//   },
+// ];
 
 app.get("/api/genres", (req, res) => {
   res.send(genres);
