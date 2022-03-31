@@ -51,8 +51,22 @@ async function updateAuthor(courseId) {
   });
 }
 
-createCourse("Node Course", [
-  new Author({ name: "Mosh" }),
-  new Author({ name: "Fateme" }),
-]);
+async function addAuthor(courseId, author) {
+  const course = await Course.findById(courseId);
+  course.authors.push(author);
+  course.save();
+}
+async function removeAuthor(courseId, authorId) {
+  const course = await Course.findById(courseId);
+  const author = course.authors.id(authorId);
+  author.remove();
+  course.save();
+}
+
+// addAuthor("6240e332c160d1a0a6f97c71", new Author({ name: "Amy" }));
+// createCourse("Node Course", [
+//   new Author({ name: "Mosh" }),
+//   new Author({ name: "Fateme" }),
+// ]);
 // updateAuthor("6240d8bbab6ca6de38b65161");
+removeAuthor("6240e332c160d1a0a6f97c71", "6240e332c160d1a0a6f97c6f");
